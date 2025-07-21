@@ -1,0 +1,120 @@
+{% extends 'weather/base.html' %}
+
+{% block title %}Weather Search - Weather App{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Search Form -->
+        <div class="weather-card p-4 mb-4">
+            <h1 class="text-center mb-4">
+                <i class="fas fa-search text-primary"></i> Weather Search
+            </h1>
+            
+            <form method="post" class="mb-4">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-8">
+                        {{ form.city }}
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search"></i> Get Weather
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Weather Display -->
+        {% if weather_data %}
+        <div class="weather-card p-4 mb-4">
+            <div class="text-center">
+                <h2 class="mb-3">
+                    <i class="fas fa-map-marker-alt text-danger"></i>
+                    {{ weather_data.city }}, {{ weather_data.country }}
+                </h2>
+                
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center">
+                        <img src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@4x.png" 
+                             class="weather-icon" alt="Weather icon">
+                        <div class="temp-display">{{ weather_data.temperature }}°C</div>
+                        <p class="lead">{{ weather_data.description }}</p>
+                        <p class="text-muted">Feels like {{ weather_data.feels_like }}°C</p>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="card h-100 text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-temperature-high text-danger fa-2x mb-2"></i>
+                                        <h6>High</h6>
+                                        <h5>{{ weather_data.temp_max }}°C</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card h-100 text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-temperature-low text-primary fa-2x mb-2"></i>
+                                        <h6>Low</h6>
+                                        <h5>{{ weather_data.temp_min }}°C</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card h-100 text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-tint text-info fa-2x mb-2"></i>
+                                        <h6>Humidity</h6>
+                                        <h5>{{ weather_data.humidity }}%</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card h-100 text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-wind text-success fa-2x mb-2"></i>
+                                        <h6>Wind</h6>
+                                        <h5>{{ weather_data.wind_speed }} m/s</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recent Searches -->
+        {% if recent_searches %}
+        <div class="weather-card p-4">
+            <h3 class="mb-3">
+                <i class="fas fa-history text-secondary"></i> Recent Searches
+            </h3>
+            <div class="row">
+                {% for search in recent_searches %}
+                <div class="col-md-6 mb-3">
+                    <div class="recent-search-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">{{ search.city }}, {{ search.country }}</h6>
+                                <small>{{ search.description }}</small>
+                            </div>
+                            <div class="text-end">
+                                <h5 class="mb-0">{{ search.temperature }}°C</h5>
+                                <small>{{ search.searched_at|date:"M d, H:i" }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
