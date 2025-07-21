@@ -7,7 +7,7 @@ SECRET_KEY = 'your-secret-key-here-change-in-production'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['weatherapp.onrender.com']
+ALLOWED_HOSTS = ['weatherapp-zaq1.onrender.com']
 
 
 INSTALLED_APPS = [
